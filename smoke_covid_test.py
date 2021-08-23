@@ -1,6 +1,6 @@
 from delphi_epidata.requests import CovidcastEpidata, EpiRange
 
-epidata = CovidcastEpidata()
+epidata = CovidcastEpidata("test")
 print(list(epidata.source_names))
 apicall = epidata[("fb-survey", "smoothed_cli")].call(
     "nation",

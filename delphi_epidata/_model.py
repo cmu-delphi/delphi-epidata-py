@@ -154,6 +154,7 @@ class AEpiDataCall:
     """
 
     _base_url: Final[str]
+    _api_key: Final[str]
     _endpoint: Final[str]
     _params: Final[Mapping[str, Union[None, EpiRangeLike, Iterable[EpiRangeLike]]]]
     meta: Final[Sequence[EpidataFieldInfo]]
@@ -163,12 +164,14 @@ class AEpiDataCall:
     def __init__(
         self,
         base_url: str,
+        api_key: str,
         endpoint: str,
         params: Mapping[str, Union[None, EpiRangeLike, Iterable[EpiRangeLike]]],
         meta: Optional[Sequence[EpidataFieldInfo]] = None,
         only_supports_classic: bool = False,
     ) -> None:
         self._base_url = base_url
+        self._api_key = api_key
         self._endpoint = endpoint
         self._params = params
         self.only_supports_classic = only_supports_classic
@@ -190,6 +193,7 @@ class AEpiDataCall:
             all_params["format"] = format_type
         if fields:
             all_params["fields"] = fields
+        all_params["token"] = self._api_key
         return {k: format_list(v) for k, v in all_params.items() if v is not None}
 
     def request_arguments(
@@ -220,7 +224,7 @@ class AEpiDataCall:
         u, p = self.request_arguments(format_type, fields)
         query = urlencode(p)
         if query:
-            return f"{u}?{query}"
+            return f"{u}?{query}&token={self._api_key}"
         return u
 
     def __repr__(self) -> str:

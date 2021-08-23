@@ -3,7 +3,8 @@ from delphi_epidata.async_requests import Epidata
 
 
 async def main() -> None:
-    apicall = Epidata.covidcast("fb-survey", "smoothed_cli", "day", "nation", Epidata.range(20210405, 20210410), "us")
+    epidata = Epidata("test")
+    apicall = epidata.covidcast("fb-survey", "smoothed_cli", "day", "nation", Epidata.range(20210405, 20210410), "us")
     classic = await apicall.classic()
     print(classic)
 
